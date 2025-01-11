@@ -5,7 +5,12 @@
 #define SoilHumidityPin 32
 #define WaterLevelPin 33
 #define RelayPin 25
+#define BuzzerPin 16
+#define ButtonPin 5
+int value = 0;
 //dht11 DHT11;
+
+
 
 const char* ssid = "VM7012826";
 const char* password = "Rmpj6viujjjcyi5k";
@@ -24,6 +29,10 @@ void setup() {
   Serial.println("Connected to WIFI");
   Serial.println(WiFi.localIP());
   pinMode(RelayPin,OUTPUT);
+  pinMode(SoilHumidityPin,INPUT);
+  pinMode(WaterLevelPin,INPUT);
+  pinMode(BuzzerPin,OUTPUT);
+  pinMode(ButtonPin,INPUT);
 }
 
 void loop() {
@@ -31,18 +40,58 @@ void loop() {
   //float chk = DHT11.read(SteamPin);
   float soilhumidity = analogRead(SoilHumidityPin);
   float waterlevel = analogRead(WaterLevelPin);
+  float ReadValue = digitalRead(ButtonPin);
   Serial.println(soilhumidity);
+  Serial.println(waterlevel);
   //pinMode(soilhumidity, INPUT);
   //pinMode(waterlevel, INPUT);
   
-  
-  
-  //if(5000 >= soilhumidity)
-  //{
+  if (ReadValue == 0) {
+    //Eliminate the button shake
+    delay(10);  
+    if (ReadValue == 0) {
+      value = !value;
+      Serial.print("The current status of the button is : ");
+      Serial.println(value);
+    }
+    //Again, determine whether the button is still pressed
+    //Pressed: execute the loop; Released: exit the loop to next execution
+    while (digitalRead(ButtonPin) == 0); 
+  }
+  if(500 >= soilhumidity && value == 0)
+  {
+    tone(BuzzerPin, 532);
+    delay(100);
+    tone(BuzzerPin, 532);
+    delay(100);
+    tone(BuzzerPin, 659);
+    delay(100);
+    noTone(BuzzerPin);
+  }
+  if(500 >= waterlevel && value == 0)
+  {
+    tone(BuzzerPin, 411);
+    delay(100);
+    tone(BuzzerPin, 639);
+    delay(100);
+    tone(BuzzerPin, 411);
+    delay(100);
+    noTone(BuzzerPin);
+
+  }
+  if(500 >= soilhumidity && waterlevel >= 1000)
+  {
     digitalWrite(RelayPin,HIGH);
     delay(400);
     digitalWrite(RelayPin,LOW);
     delay(700);
+  }
+  //if(1000 >= soilhumidity)
+  //{
+    //digitalWrite(RelayPin,HIGH);
+    //delay(400);
+    //digitalWrite(RelayPin,LOW);
+    //delay(700);
   //}
  
   
