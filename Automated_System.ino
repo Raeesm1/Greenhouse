@@ -52,7 +52,13 @@ void loop() {
     if (ReadValue == 0) {
       value = !value;
       Serial.print("The current status of the button is : ");
-      Serial.println(value);
+      
+      Serial.println(value + " the button has muted the alarm. Soil humidity or water level too low");
+      
+      //else{
+        //Serial.println(value);
+      //}
+      
     }
     //Again, determine whether the button is still pressed
     //Pressed: execute the loop; Released: exit the loop to next execution
@@ -67,6 +73,7 @@ void loop() {
     tone(BuzzerPin, 659);
     delay(100);
     noTone(BuzzerPin);
+    Serial.println("Soil humidity is too low");
   }
   if(500 >= waterlevel && value == 0)
   {
@@ -77,7 +84,7 @@ void loop() {
     tone(BuzzerPin, 411);
     delay(100);
     noTone(BuzzerPin);
-
+    Serial.println("Water level is too low");
   }
   if(500 >= soilhumidity && waterlevel >= 1000)
   {
