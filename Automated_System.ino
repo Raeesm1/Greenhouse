@@ -1,6 +1,6 @@
 #include <WiFi.h>
 #include <dht11.h>
-//#define DHT11PIN 17
+#define DHT11PIN 17
 #define SteamPin 35
 #define SoilHumidityPin 32
 #define WaterLevelPin 33
@@ -8,7 +8,7 @@
 #define BuzzerPin 16
 #define ButtonPin 5
 int value = 0;
-//dht11 DHT11;
+dht11 DHT11;
 
 
 
@@ -41,11 +41,13 @@ void loop() {
   float soilhumidity = analogRead(SoilHumidityPin);
   float waterlevel = analogRead(WaterLevelPin);
   float ReadValue = digitalRead(ButtonPin);
+  
+  
   Serial.println(soilhumidity);
   Serial.println(waterlevel);
   //pinMode(soilhumidity, INPUT);
   //pinMode(waterlevel, INPUT);
-  
+  /* turn the alarm off and on */
   if (ReadValue == 0) {
     //Eliminate the button shake
     delay(10);  
