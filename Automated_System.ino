@@ -52,8 +52,8 @@ void loop() {
     if (ReadValue == 0) {
       value = !value;
       Serial.print("The current status of the button is : ");
-      
-      Serial.println(value + " the button has muted the alarm. Soil humidity or water level too low");
+      Serial.println(value);
+      Serial.println(value + " alarm muted. Soil humidity or water level too low");
       
       //else{
         //Serial.println(value);
